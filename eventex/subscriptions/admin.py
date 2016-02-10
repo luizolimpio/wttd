@@ -9,9 +9,9 @@ class SubscriptionsModelAdmin(admin.ModelAdmin):
     list_filter = ('created_at',)
 
     def subcribed_today(self,obj):
-        return obj.created_at == now().date()
+        return obj.created_at.date() == now().date()
 
-    subcribed_today.short_description = 'inscrito hoje?'
+    subcribed_today.short_description = 'Inscrito hoje?'
     subcribed_today.boolean = True
 
 admin.site.register(Subscription,SubscriptionsModelAdmin)
