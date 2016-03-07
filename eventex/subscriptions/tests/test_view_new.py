@@ -1,13 +1,13 @@
-
+from django.shortcuts import resolve_url as r
 from django.core import mail
 from django.test import TestCase
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
 
-class SubscribeGet(TestCase):
+class SubscriptionNewGet(TestCase):
     def setUp(self):
-        self.response = self.client.get('/inscricao/')
+        self.response = self.client.get(r('subscriptions:new'))
 
 
     def test_get(self):
@@ -25,9 +25,12 @@ class SubscribeGet(TestCase):
             ('type="email"',1),
             ('type="submit"',1)
         )
+
         for texto,quantidade in tag:
             with self.subTest():
                 self.assertContains(self.response, texto,quantidade )
+
+
 
     def test_csrf(self):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
@@ -36,14 +39,14 @@ class SubscribeGet(TestCase):
         form = self.response.context['form']
         self.assertIsInstance(form, SubscriptionForm)
 
-class SubcribePostValid(TestCase):
+class SubscriptionNewPostValid(TestCase):
     def setUp(self):
         data = dict(name='Henrique Bastos',cpf='12345678901',email='henrique@bastos.net',phone='21-99618-6180')
-        self.response = self.client.post('/inscricao/',data)
+        self.response = self.client.post(r('subscriptions:new'),data)
 
     def test_post(self):
         """valida redirecionamento apos o post para /inscricao/"""
-        self.assertRedirects(self.response, '/inscricao/1/')
+        self.assertRedirects(self.response, r('subscriptions:detail', 1))
 
     def test_send_subscribe_email(self):
         self.assertEqual(1, len(mail.outbox))
@@ -51,9 +54,9 @@ class SubcribePostValid(TestCase):
     def test_save_subscription(self):
         self.assertTrue(Subscription.objects.exists())
 
-class SubscribePostInvalid(TestCase):
+class SubscriptionNewPostInvalid(TestCase):
     def setUp(self):
-        self.response = self.client.post('/inscricao/', {})
+        self.response = self.client.post(r('subscriptions:new'), {})
 
     def test_post(self):
         self.assertEqual(200, self.response.status_code)
