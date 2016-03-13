@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 
 from django.test import TestCase
-from eventex.subscriptions.admin import SubscriptionsModelAdmin, Subscription,admin
+from eventex.subscriptions.admin import SubscriptionsModelAdmin,admin,Subscription
 
 class SubscriptionModelAdminTest(TestCase):
     def setUp(self):
@@ -38,13 +38,3 @@ class SubscriptionModelAdminTest(TestCase):
 
         SubscriptionsModelAdmin.message_user = old_menssage_user
         return mock
-
-
-
-
-
-
-
-
-
-
