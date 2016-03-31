@@ -21,7 +21,6 @@ def empty_form(request):
 
 def create(request):
     form = SubscriptionForm(request.POST)
-    print(request.POST)
 
     if not form.is_valid():
         return render(request, 'subscriptions/subscription_form.html',{'form':form})

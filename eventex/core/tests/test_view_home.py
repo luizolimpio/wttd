@@ -21,7 +21,7 @@ class hometest(TestCase):
     def test_speakers(self):
         '''Must Show keynote speakers'''
         context = [
-                   'href="{}"'.format(r('speakers_detail',slug='gracer-hopper')),
+                   'href="{}"'.format(r('speakers_detail',slug='grace-hopper')),
                    'Grace Hopper',
                    'http://hbn.link/hopper-pic',
                    'href="{}"'.format(r('speakers_detail',slug='alan-turing')),
@@ -34,6 +34,10 @@ class hometest(TestCase):
 
     def test_speakers_link(self):
         expected = 'href="{}#speakers"'.format(r('home'))
+        self.assertContains(self.response,expected)
+
+    def test_talk_link(self):
+        expected = 'href="{}"'.format(r('talk_list'))
         self.assertContains(self.response,expected)
 
 
