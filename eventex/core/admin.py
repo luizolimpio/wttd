@@ -1,6 +1,6 @@
 from django.contrib import admin
 from eventex.core.models import Speaker, Contact, Talk
-
+from django.shortcuts import resolve_url as r
 
 class ContactInline(admin.TabularInline):
     model = Contact
