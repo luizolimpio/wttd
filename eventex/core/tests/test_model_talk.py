@@ -1,6 +1,6 @@
 from django.test import TestCase
 from eventex.core.managers import StartQuerySet
-from eventex.core.models import Talk, Speaker
+from eventex.core.models import Talk, Speaker, Course
 
 
 class TalkeModelTest(TestCase):
@@ -62,4 +62,24 @@ class TalkManagerTest(TestCase):
         expectd = ['12:01:00']
         self.assertQuerysetEqual(qs, expectd, lambda o: str(o.start))
 
+class CourseModelTest(TestCase):
+    def setUp(self):
+        self.course = Course.objects.create(title='Titulo do Curso',start='09:00',description='Descricao do Curso',slots=20)
+        self.speaker = self.course.speakers.create(
+            name='Henrique Bastos',
+            slug='henrique-bastos',
+            photo='henrique-bastos'
+        )
 
+
+    def test_model_course(self):
+        self.assertTrue(Course.objects.all().exists())
+
+    def test_relacion_course(self):
+        self.assertEqual(1,self.course.speakers.all().count())
+
+    def test_str(self):
+        self.assertEqual('Titulo do Curso',str(self.course))
+
+    def test_manage(self):
+        self.assertIsInstance(Course.objects,StartQuerySet)
